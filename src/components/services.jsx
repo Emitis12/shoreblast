@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { Card } from "antd";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import ship-haulage from "./images/ship-haulage.jpg"
+import haulage from "./images/haulage.png"
+import downstream from "./images/downstream.jpg"
 
 const cards = [
   {
     title: "General Supplies, Imports & Export",
     description: "We provide reliable sourcing and distribution of goods, handling both local and international trade. Our services ensure timely delivery and quality products across various industries, supporting operational efficiency and global connectivity.",
-    image: "/src/images/ship-haulage.jpg",
+    image: {ship-haulage}
     detailsImage: "/src/images/exporticon.jpg",
     items: [
       { label: "Service A", link: "/service-a" },
@@ -18,7 +21,7 @@ const cards = [
   {
     title: "Road Transportation Services",
     description: "Reliable and efficient movement of goods and equipment across various locations, ensuring timely delivery and operational support for diverse industries.",
-    image: "/src/images/haulage.png",
+    image: {haulage}
     detailsImage: "/src/images/roadicon.jpg",
     items: [
       { label: "Feature X", link: "/feature-x" },
@@ -29,7 +32,7 @@ const cards = [
   {
     title: "Downstream Oil and Gas Services",
     description: "Specialized solutions in hydro blasting, blasting, industrial painting, vacuum testing, pressure testing, scaffolding, hydrostatic testing, cathodic protection and marketing of petroleum products, supporting efficient operations and end-user delivery in the oil and gas value chain.",
-    image: "src/images/downstream.jpg",
+    image: {downstream}
     detailsImage: "/src/images/downrig.jpg",
     items: [
       { label: "Option 1", link: "/option-1" },

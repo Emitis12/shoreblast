@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import sandblasting from "./images/sandblasting.jpg"
+import sandblasting1 from "./images/sandblasting1.jpg"
+import sandblasting2 from "./images/sandblasting2.jpg"
 
 const Hero = () => {
   const images = [
-    "./images/sandblasting.jpg",
-    "./images/sandblasting1.jpg",
-    "./images/sandblasting2.jpg",
+    sandblasting,
+    sandblasting1,
+    sandblasting2,
   ];
  
   const [currentImage, setCurrentImage] = useState(0);
