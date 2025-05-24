@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 const Hero = () => {
   const images = [
-    "/images/sandblasting.jpg",
-    "/images/sandblasting1.jpg",
-    "/images/sandblasting2.jpg",
+    "./images/sandblasting.jpg",
+    "./images/sandblasting1.jpg",
+    "./images/sandblasting2.jpg",
   ];
  
   const [currentImage, setCurrentImage] = useState(0);
