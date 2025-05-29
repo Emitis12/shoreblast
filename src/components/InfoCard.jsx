@@ -1,11 +1,12 @@
 import React from "react";
+import logovi from "../images/logovi.gif"
 
 const InfoCard = () => {
   return (
     <div className="max-w-5xl mx-auto p-6 rounded-2xl gap-4 flex flex-col md:flex-row items-center">
       <div className="w-full md:w-1/2 mb-4 md:mb-0">
         <img
-          src="src/images/logogif.gif"
+          src={logovi}
           alt="Sample"
           className="rounded-xl w-full h-auto object-cover"
         />

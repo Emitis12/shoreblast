@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import logo from "./images/logo.png"
+import logo from "../images/logo.png"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
