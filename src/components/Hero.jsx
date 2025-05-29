@@ -29,7 +29,7 @@ const Hero = () => {
         ShoreBlast Energy
       </h1>
       <p className="text-lg md:text-xl text-white mb-6 max-w-xl">
-        Discover our services and offerings tailored just for you. We’re here to help you succeed.
+       Expert engineering solutions—ranging from Sandblasting and Industrial painting to pipeline maintenance, logistics, and manpower services—primarily for the oil and gas sector..
       </p>
       <button className="bg-blue-800 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-500">
         Get A Free Quotation
