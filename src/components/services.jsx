@@ -15,7 +15,7 @@ const cards = [
     image: shiphaulage,
     detailsImage: exportIcon,
     items: [
-      { label: "Service A", link: "/service-a" },
+      { label: "Service A", link: "/Cargo Handling" },
       { label: "Service B", link: "/service-b" },
       { label: "Service C", link: "/service-c" },
     ],
