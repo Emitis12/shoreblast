@@ -41,7 +41,11 @@ const Clientele = () => {
 
   return (
     <div className="py-16 bg-white">
-      <h2 className="text-4xl font-bold text-center mb-10 text-blue-700">Clientele</h2>
+     <h2 className="max-w-sm mx-auto mt-8 text-center text-4xl font-bold text-white bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-4 rounded-tl-lg rounded-br-lg shadow-md">
+  Clientele
+</h2>
+
+
       <div className="overflow-hidden px-4 md:px-6">
         <AnimatePresence mode="wait">
           <motion.div

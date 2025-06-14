@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import InfoCard from "./components/InfoCard";
 import CookieConsent from "./components/CookieConsent";
 import Clientele from "./components/Clientele";
+import RecentProjects from "./components/RecentProjects";
 
 const App = () => {
   useEffect(() => {
@@ -36,18 +37,21 @@ const App = () => {
       <div data-aos="fade-up">
         <InfoCard />
       </div>
-
-      {/* Stylish Divider */}
-      <div className="flex justify-center my-12" data-aos="zoom-in">
-        <div className="w-3/4 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-md" />
-      </div>
-
-      <div data-aos="fade-right">
-        <CookieConsent />
+      
+      <div className="bg-gray-100 p-10" data-aos="fade-up">
+        <RecentProjects />
       </div>
 
       <div>
         <Clientele />
+      </div>
+
+ <div className="flex justify-center my-12" data-aos="zoom-in">
+        <div className="w-3/4 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-md" />
+      </div>
+      
+      <div>
+        <CookieConsent />
       </div>
     </>
   );
