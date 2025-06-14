@@ -54,7 +54,7 @@ const Clientele = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
             transition={{ duration: 0.6 }}
-            className="flex justify-center gap-8"
+            className="flex justify-center gap-20"
           >
             {visibleClients.map((client, index) => (
               <div key={index} className="flex justify-center items-center">
