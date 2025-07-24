@@ -32,7 +32,7 @@ const App = () => {
         </Routes>
       </Router>
 
-      <div>
+      <div data-aos="fade-up">
         <TwoVideosSection />
         </div>
 
