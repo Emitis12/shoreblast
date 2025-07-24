@@ -11,6 +11,8 @@ import InfoCard from "./components/InfoCard";
 import CookieConsent from "./components/CookieConsent";
 import Clientele from "./components/Clientele";
 import RecentProjects from "./components/RecentProjects";
+import SocialMediaIcons from "./components/SocialMediaIcons";
+import TwoVideosSection from "./components/TwoVideosSection";
 
 const App = () => {
   useEffect(() => {
@@ -29,6 +31,10 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
+
+      <div>
+        <TwoVideosSection />
+        </div>
 
       <div className="bg-gray-100 p-10" data-aos="fade-up">
         <Services />
@@ -53,6 +59,10 @@ const App = () => {
       <div>
         <CookieConsent />
       </div>
+
+      <div>
+        <SocialMediaIcons />
+        </div>
     </>
   );
 };

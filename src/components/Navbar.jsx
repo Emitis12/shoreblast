@@ -4,6 +4,7 @@ import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../images/logo.png";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -124,7 +125,7 @@ const Navbar = () => {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.4 }}
-            className="fixed top-0 left-0 w-full h-full bg-white z-50 px-6 py-4 flex flex-col"
+            className="fixed top-0 left-0 w-full h-full bg-gray-200 z-50 px-6 py-4 flex flex-col"
           >
             <div className="flex justify-between items-center mb-8">
               <img src={logo} alt="Logo" className="w-20" />
@@ -146,17 +147,6 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <div className="flex gap-4 mt-6">
-                <a href="#" className="text-blue-600 hover:text-blue-800">
-                  <i className="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" className="text-blue-600 hover:text-blue-800">
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a href="#" className="text-blue-600 hover:text-blue-800">
-                  <i className="fab fa-instagram"></i>
-                </a>
-              </div>
             </div>
           </motion.div>
         )}
