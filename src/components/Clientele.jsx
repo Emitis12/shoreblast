@@ -41,7 +41,7 @@ const Clientele = () => {
 
   return (
     <div className="py-16 bg-white">
-     <h2 className="max-w-sm mx-auto mt-8 text-center text-4xl font-bold text-white bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-4 rounded-tl-lg rounded-br-lg shadow-md">
+     <h2 className="max-w-sm mx-auto mt-8 text-center text-4xl font-bold text-white bg-gradient-to-r from-blue-900 via-red-600 to-red-600 p-4 rounded-tl-lg rounded-br-lg shadow-md">
   Clientele
 </h2>
 

@@ -117,7 +117,7 @@ function RecentProjects() {
                     />
                   </div>
                   {/* Action Section */}
-                  <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 px-6 py-5 flex justify-end items-center min-h-[100px]">
+                  <div className="bg-gradient-to-r from-blue-900 via-red-600 to-red-600 px-6 py-5 flex justify-end items-center min-h-[100px]">
                     <a
                       href={card.link}
                       className="group flex flex-col items-end text-white space-y-2 transition"

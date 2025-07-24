@@ -100,8 +100,21 @@ const VideoCard = ({ index, src, poster }) => {
         onLoadedMetadata={handleLoadedMetadata}
       />
 
+      {/* Play Overlay on all screens */}
+      {!isPlaying && (
+        <button
+          onClick={togglePlay}
+          className="absolute inset-0 flex items-center justify-center bg-black/50 transition hover:bg-black/60 z-10"
+        >
+          <FaPlay className="text-white text-5xl" />
+        </button>
+      )}
+
       {/* Controls */}
-      <div className="absolute inset-0 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-t from-black/70 via-transparent to-transparent px-4 pb-4">
+      <div
+        className={`absolute inset-0 flex flex-col justify-end transition duration-300 bg-gradient-to-t from-black/70 via-transparent to-transparent px-4 pb-4
+        ${isPlaying ? 'md:opacity-0 md:group-hover:opacity-100 opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
+      >
         {/* Timeline */}
         <div
           className="h-2 w-full bg-gray-600 rounded cursor-pointer mb-2"

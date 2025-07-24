@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
-import { Button } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../images/logo.png";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
@@ -33,7 +32,9 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
-        scrolled ? "bg-white shadow-md border-black" : "bg-transparent border-white"
+        scrolled
+          ? "bg-gradient-to-r from-gray-100 via-gray-100 to-red-600 shadow-md border-black"
+          : "bg-transparent border-white"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
@@ -80,7 +81,7 @@ const Navbar = () => {
             <a
               href="tel:+2348012345678"
               className={`border-l ${dividerColor} pl-1 flex items-center gap-3 transition duration-300 h-full ${
-                scrolled ? "text-blue-500 hover:text-blue-800" : "text-white"
+                scrolled ? "text-white hover:text-gray-300" : "text-white"
               }`}
             >
               <svg

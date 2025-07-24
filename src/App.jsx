@@ -13,6 +13,9 @@ import Clientele from "./components/Clientele";
 import RecentProjects from "./components/RecentProjects";
 import SocialMediaIcons from "./components/SocialMediaIcons";
 import TwoVideosSection from "./components/TwoVideosSection";
+import ProposalFormSection from "./components/ProposalFormSection";
+import CoffeeCall from "./components/CoffeeCall";
+import Footer from "./components/Footer";
 
 const App = () => {
   useEffect(() => {
@@ -47,15 +50,19 @@ const App = () => {
       <div className="bg-gray-100 p-10" data-aos="fade-up">
         <RecentProjects />
       </div>
+      
+      <div className="bg-gradient-to-r from-blue-900 via-red-600 to-red-600">
+    <ProposalFormSection />
+    </div>
+
+    <div className="bg-gradient-to-r from-gray-800 via-gray-200 to-white">
+      <CoffeeCall />
+    </div>
 
       <div>
         <Clientele />
       </div>
 
- <div className="flex justify-center my-12" data-aos="zoom-in">
-        <div className="w-3/4 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-md" />
-      </div>
-      
       <div>
         <CookieConsent />
       </div>
@@ -63,6 +70,10 @@ const App = () => {
       <div>
         <SocialMediaIcons />
         </div>
+
+        <div className="bg-gradient-to-r from-red-600 via-blue-900 to-blue-900">
+    <Footer />
+    </div>
     </>
   );
 };
