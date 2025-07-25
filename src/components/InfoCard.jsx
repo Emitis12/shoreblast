@@ -3,7 +3,7 @@ import logovi from "../images/logovi.gif"
 
 const InfoCard = () => {
   return (
-    <div className="max-w-5xl mx-auto p-6 rounded-2xl gap-4 flex flex-col md:flex-row items-center">
+    <div id="about" className="max-w-5xl mx-auto p-6 rounded-2xl gap-4 flex flex-col md:flex-row items-center">
       <div className="w-full md:w-1/2 mb-4 md:mb-0">
         <img
           src={logovi}

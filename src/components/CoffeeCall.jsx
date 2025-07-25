@@ -3,11 +3,13 @@ import { FaPhoneAlt } from "react-icons/fa";
 
 const CoffeeInviteSection = () => {
   return (
-    <section className="pt-32 pb-32 max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center justify-between gap-80">
-      
+    <section
+      className="pt-32 pb-32 bg-cover bg-center bg-no-repeat max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center justify-between gap-80">
       {/* Left Text Section */}
       <div className="md:w-2/3">
-        <h2 className="text-4xl font-bold text-gray-50 mb-4">FOR COFFEE WE ARE WAITING</h2>
+        <h2 className="text-4xl font-bold text-gray-50 mb-4">
+          FOR COFFEE WE ARE WAITING
+        </h2>
         <p className="text-lg text-gray-50">
           We would be happy to host you in our office so that you can have more
           detailed information about our projects.

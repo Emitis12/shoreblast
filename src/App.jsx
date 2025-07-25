@@ -16,6 +16,7 @@ import TwoVideosSection from "./components/TwoVideosSection";
 import ProposalFormSection from "./components/ProposalFormSection";
 import CoffeeCall from "./components/CoffeeCall";
 import Footer from "./components/Footer";
+import bgImage from "./images/coffeeimg.png";
 
 const App = () => {
   useEffect(() => {
@@ -55,7 +56,10 @@ const App = () => {
     <ProposalFormSection />
     </div>
 
-    <div className="bg-gradient-to-r from-gray-800 via-gray-200 to-white">
+    <div
+      className="bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
       <CoffeeCall />
     </div>
 

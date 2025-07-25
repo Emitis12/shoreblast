@@ -10,7 +10,7 @@ const SocialMediaIcons = ({ hiddenOnMobile }) => {
       }`}
     >
       <a
-        href="https://www.facebook.com/yourpage"
+        href="https://www.facebook.com/share/1CDKhq9bMD/"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition"
@@ -19,7 +19,7 @@ const SocialMediaIcons = ({ hiddenOnMobile }) => {
       </a>
 
       <a
-        href="https://www.instagram.com/yourprofile"
+        href="https://www.instagram.com/shoreblast2015?igsh=bzBza2sxdTNhdHhz"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white p-3 rounded-full hover:opacity-90 transition"
@@ -28,7 +28,7 @@ const SocialMediaIcons = ({ hiddenOnMobile }) => {
       </a>
 
       <a
-        href="https://wa.me/2348012345678"
+        href="https://wa.link/0hyqwp"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-green-500 text-white p-3 rounded-full hover:bg-green-600 transition"
@@ -37,14 +37,14 @@ const SocialMediaIcons = ({ hiddenOnMobile }) => {
       </a>
 
       <a
-        href="mailto:youremail@example.com"
+        href="mailto:info.shoreblastenergy@gmail.com"
         className="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition"
       >
         <MdEmail size={20} />
       </a>
 
       <a
-        href="tel:+2348012345678"
+        href="tel:+2347063314134"
         className="bg-gray-800 text-white p-3 rounded-full hover:bg-gray-900 transition"
       >
         <FaPhone size={20} />

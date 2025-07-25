@@ -84,7 +84,7 @@ function RecentProjects() {
   const visibleCards = allCards.slice(index * cardsPerSlide, (index + 1) * cardsPerSlide);
 
   return (
-    <div className="p-6">
+    <div id="projects" className="p-6">
       {/* Header */}
       <div className="text-center mb-10">
         <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 font-serif inline-block relative">

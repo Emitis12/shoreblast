@@ -1,33 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../images/logo.png";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
+const DownArrowIcon = ({ rotate = false }) => (
+  <svg
+    className={`w-3 h-3 transition-transform duration-300 ${
+      rotate ? "rotate-180" : "rotate-0"
+    }`}
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+  </svg>
+);
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [careerOpen, setCareerOpen] = useState(false);
   const location = useLocation();
 
   const links = [
-    { path: "/career", label: "Career" },
-    { path: "/services", label: "Services" },
-    { path: "/projects", label: "Completed Projects" },
+    {
+      label: "Career",
+      submenu: [
+        { path: "/career/human-resource", label: "Human Resource" },
+        { path: "/career/message-from-ceo", label: "Message From the CEO" },
+      ],
+    },
+    { path: "#services", label: "Services" },
+    { path: "#projects", label: "Completed Projects" },
     { path: "/catelogue", label: "Catalogue" },
-    { path: "/about", label: "About Us" },
+    { path: "#about", label: "About Us" },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const dividerColor = scrolled ? "border-black" : "border-white";
+
+  const handleLinkClick = (path) => {
+    setIsOpen(false);
+    if (path.startsWith("#")) {
+      const id = path.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.location.href = path;
+    }
+  };
 
   return (
     <nav
@@ -39,54 +72,86 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <div className="flex w-full items-center justify-between">
-          {/* Logo with close border-right */}
+          {/* Logo */}
           <div className="flex items-center">
             <div className={`border-r ${dividerColor} pr-4`}>
-              <Link to="/">
-                <img src={logo} alt="Logo" className="w-28 object-contain" />
-              </Link>
+              <a href="/">
+                <img src={logo} alt="Logo" className="w-20 object-contain" />
+              </a>
             </div>
           </div>
 
-          {/* Nav Links */}
+          {/* Desktop Nav */}
           <motion.div
             className="hidden md:flex flex-grow justify-center px-8"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {links.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative text-base font-medium mx-3 ${
-                  scrolled ? "text-gray-800" : "text-white"
-                } hover:text-blue-600 transition`}
-              >
+            {links.map((link, index) =>
+              link.submenu ? (
+                <div className="relative group mx-3" key={index}>
+                  <span
+                    className={`text-base font-medium cursor-pointer ${
+                      scrolled ? "text-gray-800" : "text-white"
+                    } hover:text-blue-600 flex items-center gap-1`}
+                  >
+                    <span
+                      className={`pb-1 border-b-2 flex items-center gap-1 ${
+                        location.pathname.startsWith("/career")
+                          ? "border-blue-600"
+                          : "border-transparent"
+                      } group-hover:border-blue-600 transition-all`}
+                    >
+                      {link.label}
+                      <DownArrowIcon rotate={false} />
+                    </span>
+                  </span>
+                  <div className="absolute top-full mt-2 left-0 bg-white shadow-md rounded-md opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition duration-300 transform scale-95 group-hover:scale-100 z-10">
+                    {link.submenu.map((sublink) => (
+                      <a
+                        key={sublink.path}
+                        href={sublink.path}
+                        className="block px-4 py-2 whitespace-nowrap text-sm text-gray-800 hover:bg-blue-100"
+                      >
+                        {sublink.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : (
                 <span
-                  className={`pb-1 border-b-2 transition-all duration-200 ${
-                    location.pathname === link.path
-                      ? "border-blue-600"
-                      : "border-transparent hover:border-blue-600"
-                  }`}
+                  key={link.path}
+                  onClick={() => handleLinkClick(link.path)}
+                  className={`relative text-base font-medium mx-3 cursor-pointer ${
+                    scrolled ? "text-gray-800" : "text-white"
+                  } hover:text-blue-600 transition`}
                 >
-                  {link.label}
+                  <span
+                    className={`pb-1 border-b-2 transition-all duration-200 ${
+                      location.hash === link.path
+                        ? "border-blue-600"
+                        : "border-transparent hover:border-blue-600"
+                    }`}
+                  >
+                    {link.label}
+                  </span>
                 </span>
-              </Link>
-            ))}
+              )
+            )}
           </motion.div>
 
-          {/* Contact Us on Desktop */}
+          {/* Contact Us */}
           <div className="hidden md:flex items-center">
             <a
-              href="tel:+2348012345678"
+              href="tel:+2347063314134"
               className={`border-l ${dividerColor} pl-1 flex items-center gap-3 transition duration-300 h-full ${
                 scrolled ? "text-white hover:text-gray-300" : "text-white"
               }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-35 w-10"
+                className="h-20 w-10"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -100,7 +165,7 @@ const Navbar = () => {
               </svg>
               <div className="flex flex-col leading-tight">
                 <span className="text-xs font-semibold">Have any questions?</span>
-                <span className="text-2xl text-black">+234 801 234 5678</span>
+                <span className="text-2xl text-black">+234 706 331 4134</span>
               </div>
             </a>
           </div>
@@ -117,7 +182,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Animated Fullscreen Mobile Dropdown */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -138,16 +203,41 @@ const Navbar = () => {
               </button>
             </div>
             <div className="flex flex-col items-center justify-center flex-grow gap-6">
-              {links.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className="text-lg font-semibold text-gray-800 hover:text-blue-600"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {links.map((link, index) =>
+                link.submenu ? (
+                  <div key={index} className="flex flex-col items-center text-center">
+                    <button
+                      onClick={() => setCareerOpen(!careerOpen)}
+                      className="text-lg font-semibold text-gray-800 hover:text-blue-600 flex items-center gap-1"
+                    >
+                      {link.label}
+                      <DownArrowIcon rotate={careerOpen} />
+                    </button>
+                    {careerOpen && (
+                      <div className="mt-2 flex flex-col items-center">
+                        {link.submenu.map((sublink) => (
+                          <a
+                            key={sublink.path}
+                            href={sublink.path}
+                            onClick={() => setIsOpen(false)}
+                            className="text-sm text-gray-700 hover:text-blue-600 mt-1"
+                          >
+                            {sublink.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <span
+                    key={link.path}
+                    onClick={() => handleLinkClick(link.path)}
+                    className="text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer"
+                  >
+                    {link.label}
+                  </span>
+                )
+              )}
             </div>
           </motion.div>
         )}

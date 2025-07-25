@@ -5,9 +5,9 @@ const Footer = () => (
   <footer className="bg-gray-900 text-gray-200 pt-10">
     {/* Top social bar */}
     <div className="max-w-7xl mx-auto px-6 flex justify-center space-x-6 mb-8">
-      <a href="#" aria-label="Telegram" className="hover:text-white"><FaTelegramPlane size={24} /></a>
-      <a href="#" aria-label="WhatsApp" className="hover:text-white"><FaWhatsapp size={24} /></a>
-      <a href="#" aria-label="Instagram" className="hover:text-white"><FaInstagram size={24} /></a>
+      <a href="https://www.facebook.com/share/1CDKhq9bMD/" aria-label="Telegram" className="hover:text-white"><FaTelegramPlane size={24} /></a>
+      <a href="https://wa.link/0hyqwp" aria-label="WhatsApp" className="hover:text-white"><FaWhatsapp size={24} /></a>
+      <a href="https://www.instagram.com/shoreblast2015?igsh=bzBza2sxdTNhdHhz" aria-label="Instagram" className="hover:text-white"><FaInstagram size={24} /></a>
     </div>
 
     {/* Links section */}
@@ -45,10 +45,10 @@ const Footer = () => (
       <div>
         <h4 className="font-semibold mb-4">CONTACT</h4>
         <ul className="space-y-1 text-gray-400">
-          <li><a href="tel:+2348085753728" className="hover:text-white">+234 808 575 3728</a></li>
-          <li><a href="mailto:info@motech-nigeria.com" className="hover:text-white">info.shoreblast@gmail.com.com</a></li>
+          <li><a href="tel:+2347063314134" className="hover:text-white">+234 706 331 4134</a></li>
+          <li><a href="mailto:info.shoreblastenergy@gmail.com" className="hover:text-white">info.shoreblastenergy@gmail.com.com</a></li>
           <li>
-            Old Odukpani Road, Ikot Ansa<br />
+            52 Atu Street Off Goldie Road<br />
             Calabar, Cross River, Nigeria
           </li>
         </ul>
