@@ -11,6 +11,7 @@ const Hero = () => {
       description:
         "Expert engineering solutions—ranging from Sandblasting and Industrial painting to pipeline maintenance, logistics, and manpower services—primarily for the oil and gas sector.",
       buttonText: "Get A Free Quotation",
+      buttonLink: "#proposal", // <-- your link here
     },
     {
       image: sandblasting1,
@@ -18,6 +19,7 @@ const Hero = () => {
       description:
         "We offer high-performance surface treatment services for structural steel, tanks, and pipes—ensuring corrosion protection and lasting durability.",
       buttonText: "Explore Our Services",
+      buttonLink: "#proposal", // <-- your link here
     },
     {
       image: sandblasting2,
@@ -25,6 +27,7 @@ const Hero = () => {
       description:
         "From marine to offshore facilities, our industrial painting solutions are tailored to withstand extreme environments and extend asset life.",
       buttonText: "Request a Consultation",
+      buttonLink: "#proposal", // <-- your link here
     },
   ];
 
@@ -43,7 +46,7 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden flex justify-center items-center text-center px-4">
-      {/* Image stack with fade transition */}
+      {/* Background images */}
       {slides.map((slide, index) => (
         <img
           key={index}
@@ -63,9 +66,12 @@ const Hero = () => {
         <p className="text-lg md:text-xl text-white mb-6 max-w-xl">
           {slides[currentImage].description}
         </p>
-        <button className="bg-blue-800 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-500 transition">
+        <a
+          href={slides[currentImage].buttonLink}
+          className="inline-block bg-blue-800 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-500 transition"
+        >
           {slides[currentImage].buttonText}
-        </button>
+        </a>
 
         {/* Pagination Dots */}
         <div className="flex justify-center gap-3 mt-6">

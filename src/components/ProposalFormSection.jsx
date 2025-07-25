@@ -3,7 +3,7 @@ import proposal from "../images/proposal.jpg";
 
 const ProposalFormSection = () => {
   return (
-    <section className="max-w-6xl mx-auto px-4 py-12">
+    <section id="proposal" className="max-w-6xl mx-auto px-4 py-12">
       <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
 
         {/* Image Section */}
