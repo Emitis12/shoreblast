@@ -33,7 +33,7 @@ const Footer = () => (
       <div>
         <h4 className="font-semibold mb-4">COMPLETED PROJECT</h4>
         <ul className="space-y-2 text-gray-400">
-          <li><a href="/projects" className="hover:text-white">View Projects</a></li>
+          <li><a href="#projects" className="hover:text-white">View Projects</a></li>
         </ul>
       </div>
       <div>
@@ -43,13 +43,21 @@ const Footer = () => (
         </ul>
       </div>
       <div>
-        <h4 className="font-semibold mb-4">CONTACT</h4>
+        <h4 className="font-semibold mb-4">HEAD OFFICE</h4>
         <ul className="space-y-1 text-gray-400">
           <li><a href="tel:+2347063314134" className="hover:text-white">+234 706 331 4134</a></li>
           <li><a href="mailto:info.shoreblastenergy@gmail.com" className="hover:text-white">info.shoreblastenergy@gmail.com.com</a></li>
           <li>
-            52 Atu Street Off Goldie Road<br />
-            Calabar, Cross River, Nigeria
+            3 Nkwa Close, Off Basin Authority<br />
+            8 Miles, Calabar, Cross River State, Nigeria
+          </li>
+        </ul>
+        <br />
+        <h4 className="font-semibold mb-4">PROJECT SITE OFFICE</h4>
+        <ul className="space-y-1 text-gray-400">
+          <li>
+            Port Harcourt Refinery Complex<br />
+            Alesa Eleme, Rivers State, Nigeria
           </li>
         </ul>
       </div>
