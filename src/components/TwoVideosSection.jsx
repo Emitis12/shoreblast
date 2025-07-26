@@ -100,7 +100,6 @@ const VideoCard = ({ index, src, poster }) => {
         onLoadedMetadata={handleLoadedMetadata}
       />
 
-      {/* Play Overlay on all screens */}
       {!isPlaying && (
         <button
           onClick={togglePlay}
@@ -110,12 +109,10 @@ const VideoCard = ({ index, src, poster }) => {
         </button>
       )}
 
-      {/* Controls */}
       <div
         className={`absolute inset-0 flex flex-col justify-end transition duration-300 bg-gradient-to-t from-black/70 via-transparent to-transparent px-4 pb-4
         ${isPlaying ? 'md:opacity-0 md:group-hover:opacity-100 opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
       >
-        {/* Timeline */}
         <div
           className="h-2 w-full bg-gray-600 rounded cursor-pointer mb-2"
           onClick={handleProgressClick}
@@ -126,21 +123,16 @@ const VideoCard = ({ index, src, poster }) => {
           />
         </div>
 
-        {/* Bottom Control Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 text-white text-sm">
-          {/* Left */}
           <div className="flex items-center gap-3">
-            {/* Play / Pause */}
             <button onClick={togglePlay}>
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
 
-            {/* Mute */}
             <button onClick={toggleMute}>
               {muted ? <FaVolumeMute /> : <FaVolumeUp />}
             </button>
 
-            {/* Volume Slider */}
             <input
               type="range"
               min="0"
@@ -151,15 +143,12 @@ const VideoCard = ({ index, src, poster }) => {
               className="w-20"
             />
 
-            {/* Time */}
             <span>
               {formatTime(currentTime)} / {formatTime(duration)}
             </span>
           </div>
 
-          {/* Right */}
           <div className="flex items-center gap-2">
-            {/* Speed Selector */}
             <select
               value={speed}
               onChange={handleSpeedChange}
@@ -172,7 +161,6 @@ const VideoCard = ({ index, src, poster }) => {
               ))}
             </select>
 
-            {/* Fullscreen */}
             <button onClick={handleFullscreen}>
               <FaExpand />
             </button>
@@ -193,8 +181,8 @@ const TwoVideosSection = () => {
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-        <VideoCard index={0} src="/videos/sample1.mp4" poster="/videos/thumb1.jpg" />
+      {/* Only second video displayed, made slightly larger */}
+      <div className="max-w-5xl mx-auto">
         <VideoCard index={1} src="/videos/sample2.mp4" poster="/videos/thumb2.jpg" />
       </div>
 

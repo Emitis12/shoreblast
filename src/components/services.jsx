@@ -5,7 +5,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 
 import shiphaulage from "../images/shiphaulage.jpg";
 import haulage from "../images/haulage.png";
-import downstream from "../images/downstream.jpg";
+import downstream from "../images/downstream.jpeg";
 import exportIcon from "../images/exporticon.jpg";
 import roadIcon from "../images/roadicon.jpg";
 import downrig from "../images/downrig.jpg";
@@ -104,7 +104,7 @@ const Services = () => {
   const [nestedModalItem, setNestedModalItem] = useState(null);
 
   return (
-    <div id="services" className="max-w-6xl mx-auto py-12 px-4 text-center">
+    <div className="max-w-6xl mx-auto py-12 px-4 text-center">
       <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-900 via-red-600 to-red-600 bg-clip-text text-transparent inline-block relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-full after:h-[5px] after:bg-[url('/images/zigzag.svg')] after:bg-repeat-x after:bg-center after:animate-pulse">
         Our Services
       </h2>
