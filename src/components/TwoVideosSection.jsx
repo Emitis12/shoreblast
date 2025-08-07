@@ -181,16 +181,17 @@ const TwoVideosSection = () => {
         </p>
       </div>
 
-      {/* Only second video displayed, made slightly larger */}
       <div className="max-w-5xl mx-auto">
         <VideoCard index={1} src="/videos/sample2.mp4" poster="/videos/thumb2.jpg" />
       </div>
 
+<a href="#about">
       <div className="text-center mt-10">
         <button className="bg-blue-700 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-800 transition">
           Learn More About Our Services
         </button>
       </div>
+      </a>
     </section>
   );
 };

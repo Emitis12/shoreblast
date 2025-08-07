@@ -11,7 +11,7 @@ const Hero = () => {
       description:
         "Expert engineering solutions—ranging from Sandblasting and Industrial painting to pipeline maintenance, logistics, and manpower services—primarily for the oil and gas sector.",
       buttonText: "Get A Free Quotation",
-      buttonLink: "#proposal", // <-- your link here
+      buttonLink: "#proposal",
     },
     {
       image: sandblasting1,
@@ -19,7 +19,7 @@ const Hero = () => {
       description:
         "We offer high-performance surface treatment services for structural steel, tanks, and pipes—ensuring corrosion protection and lasting durability.",
       buttonText: "Explore Our Services",
-      buttonLink: "#proposal", // <-- your link here
+      buttonLink: "#proposal",
     },
     {
       image: sandblasting2,
@@ -27,7 +27,7 @@ const Hero = () => {
       description:
         "From marine to offshore facilities, our industrial painting solutions are tailored to withstand extreme environments and extend asset life.",
       buttonText: "Request a Consultation",
-      buttonLink: "#proposal", // <-- your link here
+      buttonLink: "#proposal",
     },
   ];
 

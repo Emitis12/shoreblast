@@ -6,7 +6,7 @@ import procurementImage from "../images/haulage.png";
 
 const About = () => {
   return (
-    <div className="space-y-0">
+    <div id="about" className="space-y-0">
       {/* About Us */}
       <section className="bg-gray-400 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto">

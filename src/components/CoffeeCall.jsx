@@ -19,7 +19,7 @@ const CoffeeInviteSection = () => {
       {/* Right Button Section */}
       <div className="md:w-1/3 flex justify-center md:justify-end">
         <a
-          href="tel:+2348012345678"
+          href="tel:+2347063314134"
           className="flex flex-col items-center bg-gradient-to-r from-blue-900 via-red-600 to-red-600 text-white px-8 py-6 rounded-2xl text-lg font-semibold shadow-lg hover:bg-blue-700 transition-all duration-300"
         >
           <FaPhoneAlt className="text-3xl mb-2" />
