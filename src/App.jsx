@@ -58,10 +58,12 @@ const PageContent = () => {
           <div id="projects" className="bg-gray-100 p-10" data-aos="fade-up">
             <RecentProjects />
           </div>
+          <div>
+            <ScrollToTop />
+          </div>
           <Clientele />
           <CookieConsent />
           <SocialMediaIcons />
-          <ScrollToTop />
         </>
       )}
 
