@@ -27,6 +27,7 @@ import TrackRecords from "./pages/TrackRecords";
 import Investment from "./pages/Investment";
 import MessageFromCEO from "./pages/Message";
 import HumanResource from "./pages/HumanResource";
+import ScrollToTop from "./components/ScrollToTop";
 
 // PageContent wrapper for conditional shared sections
 const PageContent = () => {
@@ -60,6 +61,7 @@ const PageContent = () => {
           <Clientele />
           <CookieConsent />
           <SocialMediaIcons />
+          <ScrollToTop />
         </>
       )}
 

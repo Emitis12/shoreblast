@@ -46,7 +46,7 @@ const Footer = () => (
         <h4 className="font-semibold mb-4">HEAD OFFICE</h4>
         <ul className="space-y-1 text-gray-400">
           <li><a href="tel:+2347063314134" className="hover:text-white">+234 706 331 4134</a></li>
-          <li><a href="mailto:info.shoreblastenergy@gmail.com" className="hover:text-white">info.shoreblastenergy@gmail.com.com</a></li>
+          <li><a href="mailto:info.shoreblastenergy@gmail.com" className="hover:text-white">info.shoreblastenergy@gmail.com</a></li>
           <li>
             3 Nkwa Close, Off Basin Authority<br />
             8 Miles, Calabar, Cross River State, Nigeria
