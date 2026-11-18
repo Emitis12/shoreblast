@@ -1,8 +1,12 @@
+
 import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+
 import sandblasting from "../images/sandblasting.jpeg";
 import sandblasting1 from "../images/sandblasting1.jpeg";
 import sandblasting2 from "../images/sandblasting2.jpeg";
-import sandblasting3 from "../images/sandblasting3.jpeg"; // 4th image
+import sandblasting3 from "../images/sandblasting3.jpeg";
 
 const Hero = () => {
   const slides = [
@@ -48,6 +52,7 @@ const Hero = () => {
         prevImage === slides.length - 1 ? 0 : prevImage + 1
       );
     }, 5000);
+
     return () => clearInterval(interval);
   }, [slides.length]);
 
@@ -55,55 +60,147 @@ const Hero = () => {
     setCurrentImage(index);
   };
 
+  const activeSlide = slides[currentImage];
+
   return (
-    <section className="relative min-h-screen overflow-hidden flex justify-center items-center text-center px-4">
-      {/* Background images */}
-      {slides.map((slide, index) => (
-        <img
-          key={index}
-          src={slide.image}
-          alt={`slide-${index}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-            index === currentImage ? "opacity-100 z-[-1]" : "opacity-0 z-[-1]"
-          }`}
-        />
-      ))}
+    <section className="relative min-h-[100svh] pt-20 w-full overflow-hidden flex items-center bg-[#091b2b]">
 
-      {/* Overlay content */}
-      <div className="relative z-10 bg-opacity-50 p-6 rounded-md">
-        <h1
-          className="text-4xl md:text-6xl font-bold text-white mb-4 pt-30"
-          style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.9)" }}
-        >
-          {slides[currentImage].title}
-        </h1>
-        <p
-          className="text-lg md:text-xl text-white mb-6 max-w-xl"
-          style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.9)" }}
-        >
-          {slides[currentImage].description}
-        </p>
-        <a
-          href={slides[currentImage].buttonLink}
-          className="inline-block bg-blue-800 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-500 transition"
-          style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.8)" }}
-        >
-          {slides[currentImage].buttonText}
-        </a>
+      {/* BACKGROUND SLIDES */}
+      <div className="absolute inset-0">
+        {slides.map((slide, index) => (
+          <img
+            key={index}
+            src={slide.image}
+            alt={`Shoreblast industrial engineering - ${index + 1}`}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-[1400ms] ease-in-out ${
+              index === currentImage
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-105"
+            }`}
+          />
+        ))}
+      </div>
 
-        {/* Pagination Dots */}
-        <div className="flex justify-center gap-3 mt-6">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentImage ? "bg-blue-500 scale-125" : "bg-white"
-              }`}
-            />
-          ))}
+      {/* CINEMATIC OVERLAY */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#071827]/95 via-[#0a2033]/75 to-[#091b2b]/25" />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-[#071827]/70 via-transparent to-[#071827]/20" />
+
+      {/* SUBTLE DECORATIVE ELEMENT */}
+      <div className="absolute top-0 right-[10%] h-full w-px bg-white/10 hidden lg:block" />
+
+      {/* HERO CONTENT */}
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12 xl:px-20 pt-32 pb-32">
+
+        <div className="max-w-4xl text-left">
+
+          {/* TOP LABEL */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`label-${currentImage}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.45 }}
+              className="flex items-center gap-4 mb-7"
+            >
+              <span className="w-12 h-[2px] bg-[#c69a55]" />
+
+              <span className="text-[#e3c28d] text-[11px] md:text-xs font-semibold tracking-[3px] uppercase">
+                ShoreBlast Energy
+              </span>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* HEADLINE */}
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={`title-${currentImage}`}
+              initial={{ opacity: 0, y: 35 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.65, ease: "easeOut" }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] xl:text-[84px] leading-[1.08] font-bold tracking-[-2px] text-white mb-7 max-w-4xl"
+            >
+              {activeSlide.title}
+            </motion.h1>
+          </AnimatePresence>
+
+          {/* DESCRIPTION */}
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={`description-${currentImage}`}
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.65, delay: 0.1 }}
+              className="text-white/80 text-base md:text-lg lg:text-xl leading-[1.9] max-w-2xl mb-10 font-light"
+            >
+              {activeSlide.description}
+            </motion.p>
+          </AnimatePresence>
+
+          {/* CTA BUTTON */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`button-${currentImage}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <a
+                href={activeSlide.buttonLink}
+                className="group inline-flex items-center gap-5 bg-[#c69a55] hover:bg-[#d6ae70] text-[#10283f] px-7 md:px-9 py-4 md:py-5 text-sm font-bold tracking-wide transition-all duration-300 shadow-[0_10px_35px_rgba(0,0,0,0.2)]"
+              >
+                {activeSlide.buttonText}
+
+                <span className="w-8 h-8 rounded-full bg-[#10283f]/10 flex items-center justify-center group-hover:translate-x-1 transition-transform duration-300">
+                  <ArrowRight size={17} />
+                </span>
+              </a>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* SLIDE PAGINATION */}
+          <div className="flex items-center gap-5 mt-16">
+
+            <div className="flex items-center gap-3">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDotClick(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                  aria-current={index === currentImage ? "true" : undefined}
+                  className={`relative h-[3px] transition-all duration-500 ${
+                    index === currentImage
+                      ? "w-12 bg-[#c69a55]"
+                      : "w-5 bg-white/35 hover:bg-white/80"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <span className="text-white/60 text-xs tracking-[2px] font-medium">
+              0{currentImage + 1} <span className="mx-1">/</span> 0{slides.length}
+            </span>
+
+          </div>
         </div>
       </div>
+
+      {/* BOTTOM DECORATIVE LINE */}
+      <div className="absolute bottom-0 left-0 w-full h-[3px] bg-white/10">
+        <motion.div
+          key={currentImage}
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 5, ease: "linear" }}
+          className="h-full bg-[#c69a55]"
+        />
+      </div>
+
     </section>
   );
 };

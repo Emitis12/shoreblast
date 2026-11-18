@@ -1,7 +1,9 @@
+
 import React, { useState } from "react";
 import { Card, Modal } from "antd";
 import { motion } from "framer-motion";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { ArrowUpRight, X, ChevronRight } from "lucide-react";
 
 import shiphaulage from "../images/shiphaulage.jpg";
 import haulage from "../images/haulage.png";
@@ -104,93 +106,270 @@ const Services = () => {
   const [nestedModalItem, setNestedModalItem] = useState(null);
 
   return (
-    <div className="max-w-6xl mx-auto py-12 px-4 text-center">
-      <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-900 via-red-600 to-red-600 bg-clip-text text-transparent inline-block relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-full after:h-[5px] after:bg-[url('/images/zigzag.svg')] after:bg-repeat-x after:bg-center after:animate-pulse">
-        Our Services
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {cards.map((card, index) => (
+    <section className="relative py-20 md:py-28 px-5 md:px-8 overflow-hidden bg-[#f6f7f8]">
+
+      {/* Subtle background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#c69a55]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#10283f]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 max-w-[1400px] mx-auto">
+
+        {/* SECTION HEADING */}
+        <div className="text-center max-w-3xl mx-auto mb-14 md:mb-20">
+
           <motion.div
-            key={index}
-            whileHover={{ scale: 1.05 }}
-            className="cursor-pointer"
-            onClick={() => setSelectedCard(card)}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-center gap-3 mb-5"
           >
-            <Card
-              className="rounded-2xl shadow-xl overflow-hidden h-[450px] flex flex-col !m-0 !border-none"
-              bordered={false}
-              bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%' }}
-            >
-              <div className="h-[65%] relative">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover"
-                />
-                <FaArrowCircleRight className="absolute bottom-2 right-2 text-white text-2xl bg-blue-900 rounded-full" />
-              </div>
-              <div className="h-[35%] bg-gradient-to-r from-blue-900 via-red-600 to-red-600 text-white px-4 py-6 text-center flex flex-col justify-center items-center">
-                <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
-                <p className="text-sm line-clamp-3 mb-0">{card.description}</p>
-              </div>
-            </Card>
+            <span className="w-10 h-[2px] bg-[#c69a55]" />
+            <span className="text-[#a47b40] text-xs font-bold tracking-[3px] uppercase">
+              What We Do
+            </span>
+            <span className="w-10 h-[2px] bg-[#c69a55]" />
           </motion.div>
-        ))}
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#10283f] tracking-tight mb-5"
+          >
+            Our Services
+          </motion.h2>
+
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 65 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="h-[3px] bg-[#c69a55] mx-auto mb-6"
+          />
+
+        </div>
+
+        {/* SERVICE CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-9">
+
+          {cards.map((card, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: 0.6,
+                delay: (index % 3) * 0.1,
+              }}
+              whileHover={{ y: -8 }}
+              className="group cursor-pointer"
+              onClick={() => setSelectedCard(card)}
+            >
+
+              <Card
+                bordered={false}
+                className="!rounded-2xl !overflow-hidden !border !border-gray-200/80 !shadow-[0_8px_30px_rgba(16,40,63,0.05)] hover:!shadow-[0_20px_50px_rgba(16,40,63,0.13)] transition-all duration-500 !m-0"
+                bodyStyle={{
+                  padding: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+
+                {/* IMAGE */}
+                <div className="relative h-[250px] md:h-[270px] overflow-hidden">
+
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#071827]/85 via-[#071827]/10 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
+
+                  {/* GOLD TOP ACCENT */}
+                  <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c69a55] group-hover:w-full transition-all duration-500" />
+
+                  {/* CARD NUMBER */}
+                  <div className="absolute top-5 left-5">
+                    <span className="text-white/80 text-xs font-semibold tracking-[2px]">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  {/* ACTION ICON */}
+                  <div className="absolute bottom-5 right-5 w-11 h-11 rounded-full bg-[#c69a55] flex items-center justify-center text-[#10283f] shadow-lg group-hover:rotate-[-35deg] transition-transform duration-300">
+                    <FaArrowCircleRight className="text-xl" />
+                  </div>
+
+                </div>
+
+                {/* CARD CONTENT */}
+                <div className="relative bg-white px-6 py-7 min-h-[205px] flex flex-col justify-between">
+
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-[#10283f] mb-3 leading-snug group-hover:text-[#a47b40] transition-colors duration-300">
+                      {card.title}
+                    </h3>
+
+                    <p className="text-sm text-[#74808c] leading-[1.8] line-clamp-3">
+                      {card.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
+
+                    <span className="text-[11px] font-bold uppercase tracking-[1.8px] text-[#a47b40]">
+                      Explore Service
+                    </span>
+
+                    <ArrowUpRight
+                      size={18}
+                      className="text-[#10283f] group-hover:text-[#c69a55] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"
+                    />
+
+                  </div>
+
+                </div>
+              </Card>
+
+            </motion.div>
+          ))}
+
+        </div>
       </div>
 
-      {/* Primary Modal */}
+      {/* PRIMARY SERVICE MODAL */}
       <Modal
         open={!!selectedCard}
         onCancel={() => setSelectedCard(null)}
         footer={null}
         centered
-        width={600}
+        width={650}
+        closeIcon={<X size={20} />}
+        styles={{
+          content: {
+            padding: 0,
+            borderRadius: 18,
+            overflow: "hidden",
+          },
+          body: {
+            padding: 0,
+          },
+        }}
       >
         {selectedCard && (
-          <div className="text-left">
-            <img
-              src={selectedCard.detailsImage}
-              alt={selectedCard.title}
-              className="w-full h-48 object-cover rounded mb-4"
-            />
-            <h3 className="text-2xl font-bold mb-2 text-blue-700">
-              {selectedCard.title}
-            </h3>
-            <p className="mb-4 text-gray-700">{selectedCard.description}</p>
-            <ul className="space-y-2">
-              {selectedCard.items.map((item, i) => (
-                <li
-                  key={i}
-                  onClick={() => setNestedModalItem(item)}
-                  className="cursor-pointer text-blue-600 hover:underline"
-                >
-                  › {item.label}
-                </li>
-              ))}
-            </ul>
+          <div className="bg-white">
+
+            {/* MODAL IMAGE */}
+            <div className="relative h-52 md:h-64 overflow-hidden">
+
+              <img
+                src={selectedCard.detailsImage}
+                alt={selectedCard.title}
+                className="w-full h-full object-cover"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071827]/90 to-transparent" />
+
+              <div className="absolute bottom-5 left-6 right-6">
+                <span className="text-[#e3c28d] text-[10px] tracking-[2px] uppercase font-bold">
+                  ShoreBlast Energy
+                </span>
+
+                <h3 className="text-2xl md:text-3xl font-bold text-white mt-2">
+                  {selectedCard.title}
+                </h3>
+              </div>
+
+            </div>
+
+            {/* MODAL BODY */}
+            <div className="p-6 md:p-8">
+
+              <p className="text-[#687784] leading-[1.9] text-sm md:text-base mb-7">
+                {selectedCard.description}
+              </p>
+
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-7 h-[2px] bg-[#c69a55]" />
+                <h4 className="text-sm font-bold text-[#10283f] uppercase tracking-[1.5px]">
+                  Service Offerings
+                </h4>
+              </div>
+
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                {selectedCard.items.map((item, i) => (
+                  <li
+                    key={i}
+                    onClick={() => setNestedModalItem(item)}
+                    className="group flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-100 bg-[#f8f9fa] hover:bg-[#10283f] hover:border-[#10283f] cursor-pointer transition-all duration-300"
+                  >
+                    <span className="text-sm text-[#344657] group-hover:text-white font-medium transition-colors">
+                      {item.label}
+                    </span>
+
+                    <ChevronRight
+                      size={17}
+                      className="shrink-0 text-[#c69a55] group-hover:translate-x-1 transition-transform"
+                    />
+                  </li>
+                ))}
+
+              </ul>
+
+            </div>
           </div>
         )}
       </Modal>
 
-      {/* Nested Modal */}
+      {/* NESTED MODAL */}
       <Modal
         open={!!nestedModalItem}
         onCancel={() => setNestedModalItem(null)}
         footer={null}
         centered
-        width={500}
+        width={480}
+        closeIcon={<X size={20} />}
+        styles={{
+          content: {
+            padding: 0,
+            borderRadius: 16,
+            overflow: "hidden",
+          },
+          body: {
+            padding: 0,
+          },
+        }}
       >
         {nestedModalItem && (
-          <div>
-            <h4 className="text-xl font-bold mb-2">{nestedModalItem.label}</h4>
-            <p className="text-gray-600">
+          <div className="p-7 md:p-9 bg-white">
+
+            <div className="w-12 h-1 bg-[#c69a55] mb-6" />
+
+            <span className="text-xs font-bold uppercase tracking-[2px] text-[#a47b40]">
+              ShoreBlast Energy
+            </span>
+
+            <h4 className="text-2xl font-bold text-[#10283f] mt-3 mb-4">
+              {nestedModalItem.label}
+            </h4>
+
+            <p className="text-sm leading-relaxed text-gray-600">
               You clicked on: <strong>{nestedModalItem.label}</strong>. You may link this to a
               service detail page or more info.
             </p>
+
           </div>
         )}
       </Modal>
-    </div>
+
+    </section>
   );
 };
 

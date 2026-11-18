@@ -1,19 +1,27 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { motion, AnimatePresence } from "framer-motion";
+import { Phone, ArrowUpRight } from "lucide-react";
 import logo from "../images/logo.png";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const DownArrowIcon = ({ rotate = false }) => (
   <svg
-    className={`w-3 h-3 transition-transform duration-300 ${rotate ? "rotate-180" : "rotate-0"}`}
+    className={`w-3.5 h-3.5 transition-transform duration-300 ${
+      rotate ? "rotate-180" : "rotate-0"
+    }`}
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.8"
+      d="M19 9l-7 7-7-7"
+    />
   </svg>
 );
 
@@ -21,6 +29,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState({});
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -52,7 +61,11 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
+
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -60,7 +73,10 @@ const Navbar = () => {
   const scrollToHash = (hash) => {
     const id = hash.replace("#", "");
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   // Main link handler
@@ -69,7 +85,7 @@ const Navbar = () => {
 
     if (path.startsWith("#")) {
       if (location.pathname !== "/") {
-        navigate("/" + path); // Push route, then scroll after short delay
+        navigate("/" + path);
         setTimeout(() => scrollToHash(path), 200);
       } else {
         scrollToHash(path);
@@ -86,159 +102,269 @@ const Navbar = () => {
     }));
   };
 
-  const dividerColor = scrolled ? "border-black" : "border-white";
-
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
-      scrolled
-        ? "bg-gradient-to-r from-gray-100 via-gray-100 to-red-600 shadow-md border-black"
-        : "bg-transparent border-white"
-    }`}>
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <div className="flex w-full items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center">
-            <div className={`border-r ${dividerColor} pr-4`}>
-              <Link to="/">
-                <img src={logo} alt="Logo" className="w-20 object-contain" />
-              </Link>
-            </div>
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.08)] border-b border-gray-100"
+          : "bg-[#091b2b]/25 backdrop-blur-sm border-b border-white/15"
+      }`}
+    >
+      <div
+        className={`max-w-[1440px] mx-auto px-5 md:px-8 xl:px-12 transition-all duration-500 ${
+          scrolled ? "py-3" : "py-5"
+        }`}
+      >
+        <div className="flex items-center justify-between gap-6">
+
+          {/* LOGO */}
+          <div className="flex items-center shrink-0">
+            <Link to="/" className="flex items-center">
+              <img
+                src={logo}
+                alt="Shoreblast Energy"
+                className={`w-[82px] md:w-[95px] object-contain transition-all duration-500 ${
+                  scrolled ? "scale-95" : "scale-100"
+                }`}
+              />
+            </Link>
           </div>
 
-          {/* Desktop Nav */}
+          {/* DESKTOP NAVIGATION */}
           <motion.div
-            className="hidden md:flex flex-grow justify-center px-8"
-            initial={{ opacity: 0, y: -20 }}
+            className="hidden lg:flex flex-1 items-center justify-center gap-1"
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             {links.map((link, index) =>
               link.submenu ? (
-                <div className="relative group mx-3" key={index}>
-                  <span
-                    className={`text-base font-medium cursor-pointer ${
-                      scrolled ? "text-gray-800" : "text-white"
-                    } hover:text-blue-600 flex items-center gap-1`}
+                <div className="relative group px-2" key={index}>
+                  <button
+                    type="button"
+                    className={`relative flex items-center gap-2 py-3 text-[13px] xl:text-sm font-semibold tracking-wide transition-colors duration-300 ${
+                      scrolled
+                        ? "text-[#183047] hover:text-[#b58a49]"
+                        : "text-white hover:text-[#e5c58c]"
+                    }`}
                   >
-                    <span className="pb-1 border-b-2 flex items-center gap-1 border-transparent group-hover:border-blue-600 transition-all">
-                      {link.label}
-                      <DownArrowIcon />
-                    </span>
-                  </span>
-                  <div className="absolute top-full mt-2 left-0 bg-white shadow-md rounded-md opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition duration-300 transform scale-95 group-hover:scale-100 z-10">
-                    {link.submenu.map((sublink) => (
-                      <button
-                        key={sublink.path}
-                        className="block px-4 py-2 whitespace-nowrap text-sm text-gray-800 hover:bg-blue-100 text-left w-full"
-                        onClick={() => handleLinkClick(sublink.path)}
-                      >
-                        {sublink.label}
-                      </button>
-                    ))}
+                    {link.label}
+
+                    <DownArrowIcon />
+
+                    <span
+                      className={`absolute bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${
+                        scrolled ? "bg-[#b58a49]" : "bg-[#e5c58c]"
+                      }`}
+                    />
+                  </button>
+
+                  {/* DROPDOWN */}
+                  <div className="absolute top-full left-0 pt-3 min-w-[235px] opacity-0 invisible translate-y-3 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50">
+                    <div className="bg-white rounded-xl shadow-[0_15px_45px_rgba(0,0,0,0.13)] border border-gray-100 p-2 overflow-hidden">
+                      {link.submenu.map((sublink) => (
+                        <button
+                          key={sublink.path}
+                          type="button"
+                          onClick={() => handleLinkClick(sublink.path)}
+                          className="w-full flex items-center justify-between gap-3 text-left px-4 py-3 rounded-lg text-[13px] font-medium text-[#263b4d] hover:bg-[#f4f6f8] hover:text-[#b58a49] transition-all duration-200"
+                        >
+                          {sublink.label}
+
+                          <ArrowUpRight
+                            size={15}
+                            className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                          />
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
                 <button
                   key={link.path}
+                  type="button"
                   onClick={() => handleLinkClick(link.path)}
-                  className={`relative text-base font-medium mx-3 cursor-pointer ${
-                    scrolled ? "text-gray-800" : "text-white"
-                  } hover:text-blue-600 transition`}
+                  className={`relative mx-2 py-3 text-[13px] xl:text-sm font-semibold tracking-wide transition-colors duration-300 ${
+                    scrolled
+                      ? "text-[#183047] hover:text-[#b58a49]"
+                      : "text-white hover:text-[#e5c58c]"
+                  }`}
                 >
-                  <span className="pb-1 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
-                    {link.label}
-                  </span>
+                  {link.label}
+
+                  <span
+                    className={`absolute bottom-1 left-0 w-0 h-[2px] transition-all duration-300 hover:w-full ${
+                      scrolled ? "bg-[#b58a49]" : "bg-[#e5c58c]"
+                    }`}
+                  />
                 </button>
               )
             )}
           </motion.div>
 
-          {/* Call Section */}
-          <div className="hidden md:flex items-center">
+          {/* CONTACT SECTION */}
+          <div className="hidden lg:flex items-center shrink-0">
             <a
               href="tel:+2347063314134"
-              className={`border-l ${dividerColor} pl-1 flex items-center gap-3 transition duration-300 h-full ${
-                scrolled ? "text-white hover:text-gray-300" : "text-white"
+              className={`flex items-center gap-3 pl-5 border-l transition-colors duration-300 ${
+                scrolled
+                  ? "border-gray-200 text-[#183047]"
+                  : "border-white/30 text-white"
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-.586 1.414L7.414 9.414a16.001 16.001 0 007.172 7.172l1.586-1.586A2 2 0 0117 14h2a2 2 0 012 2v2a2 2 0 01-2 2h-.5C9.94 20 4 14.06 4 6.5V6a1 1 0 00-1-1H3z" />
-              </svg>
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  scrolled
+                    ? "bg-[#f2f4f6] text-[#183047]"
+                    : "bg-white/10 text-white"
+                }`}
+              >
+                <Phone size={17} strokeWidth={1.8} />
+              </div>
+
               <div className="flex flex-col leading-tight">
-                <span className="text-xs font-semibold">Have any questions?</span>
-                <span className="text-2xl text-black">+234 706 331 4134</span>
+                <span
+                  className={`text-[10px] uppercase tracking-[1.5px] font-semibold mb-1 ${
+                    scrolled ? "text-gray-500" : "text-white/70"
+                  }`}
+                >
+                  Have any questions?
+                </span>
+
+                <span className="text-sm xl:text-base font-bold tracking-wide">
+                  +234 706 331 4134
+                </span>
               </div>
             </a>
           </div>
 
-          {/* Mobile menu toggle */}
-          <div className="md:hidden">
+          {/* MOBILE MENU BUTTON */}
+          <div className="lg:hidden">
             <button
+              type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className={`text-3xl ${scrolled ? "text-black" : "text-white"}`}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              className={`w-11 h-11 flex items-center justify-center rounded-lg transition-all duration-300 ${
+                scrolled
+                  ? "text-[#183047] bg-gray-100"
+                  : "text-white bg-white/10"
+              }`}
             >
-              {isOpen ? <CloseOutlined /> : <MenuOutlined />}
+              {isOpen ? (
+                <CloseOutlined className="text-xl" />
+              ) : (
+                <MenuOutlined className="text-xl" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Dropdown */}
+      {/* MOBILE NAVIGATION */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            key="dropdown"
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ duration: 0.4 }}
-            className="fixed top-0 left-0 w-full h-full bg-gray-200 z-50 px-6 py-4 flex flex-col"
+            key="mobile-menu"
+            initial={{ opacity: 0, x: "-100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "-100%" }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="fixed inset-0 z-[60] bg-[#091b2b] min-h-screen flex flex-col px-7 py-6 overflow-y-auto"
           >
-            <div className="flex justify-between items-center mb-8">
-              <img src={logo} alt="Logo" className="w-20" />
+            {/* MOBILE HEADER */}
+            <div className="flex items-center justify-between pb-6 border-b border-white/10">
+              <Link to="/" onClick={() => setIsOpen(false)}>
+                <img
+                  src={logo}
+                  alt="Shoreblast Energy"
+                  className="w-[90px] object-contain"
+                />
+              </Link>
+
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
-                className="text-3xl text-gray-800"
+                aria-label="Close menu"
+                className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition"
               >
-                <CloseOutlined />
+                <CloseOutlined className="text-xl" />
               </button>
             </div>
-            <div className="flex flex-col items-center justify-center flex-grow gap-6">
+
+            {/* MOBILE LINKS */}
+            <div className="flex flex-col justify-center flex-1 py-10 gap-5">
               {links.map((link, index) =>
                 link.submenu ? (
-                  <div key={index} className="flex flex-col items-center text-center">
+                  <div
+                    key={index}
+                    className="border-b border-white/10 pb-4"
+                  >
                     <button
+                      type="button"
                       onClick={() => toggleSubmenu(link.label)}
-                      className="text-lg font-semibold text-gray-800 hover:text-blue-600 flex items-center gap-1"
+                      className="w-full flex items-center justify-between text-lg font-semibold text-white hover:text-[#e5c58c] transition-colors"
                     >
                       {link.label}
+
                       <DownArrowIcon rotate={openSubmenus[link.label]} />
                     </button>
-                    {openSubmenus[link.label] && (
-                      <div className="mt-2 flex flex-col items-center">
-                        {link.submenu.map((sublink) => (
-                          <button
-                            key={sublink.path}
-                            onClick={() => handleLinkClick(sublink.path)}
-                            className="text-sm text-gray-700 hover:text-blue-600 mt-1"
-                          >
-                            {sublink.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+
+                    <AnimatePresence>
+                      {openSubmenus[link.label] && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="flex flex-col gap-4 pt-5 pl-4">
+                            {link.submenu.map((sublink) => (
+                              <button
+                                key={sublink.path}
+                                type="button"
+                                onClick={() => handleLinkClick(sublink.path)}
+                                className="text-left text-sm text-white/65 hover:text-[#e5c58c] transition-colors"
+                              >
+                                {sublink.label}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 ) : (
                   <button
                     key={link.path}
+                    type="button"
                     onClick={() => handleLinkClick(link.path)}
-                    className="text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer"
+                    className="text-left text-lg font-semibold text-white hover:text-[#e5c58c] transition-colors border-b border-white/10 pb-4"
                   >
                     {link.label}
                   </button>
                 )
               )}
+            </div>
+
+            {/* MOBILE CONTACT */}
+            <div className="border-t border-white/10 pt-7 pb-5">
+              <span className="text-[10px] uppercase tracking-[2px] text-white/45 font-semibold">
+                Have any questions?
+              </span>
+
+              <a
+                href="tel:+2347063314134"
+                className="flex items-center gap-3 mt-3 text-white text-lg font-semibold"
+              >
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Phone size={17} />
+                </div>
+
+                +234 706 331 4134
+              </a>
             </div>
           </motion.div>
         )}
