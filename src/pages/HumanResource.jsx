@@ -21,17 +21,126 @@ const jobRoles = [
   "Project Engineers and Site Coordinators",
 ];
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 const HumanResource = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState("");
   const [cvFile, setCvFile] = useState("");
   const [credentialFile, setCredentialFile] = useState("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const closeModal = () => {
+    if (isSubmitting) return;
+
     setShowModal(false);
     setSelectedJob("");
     setCvFile("");
     setCredentialFile("");
+    setSuccessMessage("");
+    setErrorMessage("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isSubmitting) return;
+
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const fullName = String(formData.get("fullName") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const jobRole = String(formData.get("jobRole") || "").trim();
+
+    const cv = formData.get("cv");
+    const credentials = formData.get("credentials");
+
+    if (!fullName || !email || !jobRole) {
+      setErrorMessage("Please complete all required fields.");
+      return;
+    }
+
+    if (!(cv instanceof File) || !(credentials instanceof File)) {
+      setErrorMessage("Please upload your CV and credentials.");
+      return;
+    }
+
+    if (cv.size > MAX_FILE_SIZE || credentials.size > MAX_FILE_SIZE) {
+      setErrorMessage("Each document must not exceed 5 MB.");
+      return;
+    }
+
+    if (cv.size === 0 || credentials.size === 0) {
+      setErrorMessage("Please select valid documents.");
+      return;
+    }
+
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      setErrorMessage(
+        "Application service is currently unavailable. Please try again later."
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(
+        `${supabaseUrl}/functions/v1/submit-job-application`,
+        {
+          method: "POST",
+          headers: {
+            apikey: supabaseAnonKey,
+            Authorization: `Bearer ${supabaseAnonKey}`,
+          },
+          body: formData,
+        }
+      );
+
+      let data;
+
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(
+          "The server returned an unexpected response. Please try again."
+        );
+      }
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.error || "Unable to submit your application. Please try again."
+        );
+      }
+
+      setSuccessMessage(
+        "Your application has been submitted successfully. Thank you for your interest in joining Shore Blast Energy."
+      );
+
+      setErrorMessage("");
+      setCvFile("");
+      setCredentialFile("");
+      form.reset();
+    } catch (error) {
+      console.error("Career application submission error:", error);
+
+      setErrorMessage(
+        error.message ||
+          "Something went wrong while submitting your application. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -128,7 +237,11 @@ const HumanResource = () => {
 
               <button
                 type="button"
-                onClick={() => setShowModal(true)}
+                onClick={() => {
+                  setErrorMessage("");
+                  setSuccessMessage("");
+                  setShowModal(true);
+                }}
                 className="inline-flex items-center gap-3 bg-[#c69a55] hover:bg-[#d8b477] text-[#10283f] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
                 <FaFileUpload className="text-xl" />
@@ -144,7 +257,9 @@ const HumanResource = () => {
       {showModal && (
         <div
           className="fixed inset-0 bg-[#071522]/80 backdrop-blur-sm z-[100] flex items-center justify-center px-4 py-6"
-          onClick={closeModal}
+          onClick={() => {
+            if (!isSubmitting) closeModal();
+          }}
         >
           <div
             className="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative"
@@ -155,7 +270,8 @@ const HumanResource = () => {
               <button
                 type="button"
                 aria-label="Close application form"
-                className="absolute top-4 right-4 text-gray-300 hover:text-white text-xl transition"
+                disabled={isSubmitting}
+                className="absolute top-4 right-4 text-gray-300 hover:text-white text-xl transition disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={closeModal}
               >
                 <FaTimes />
@@ -188,7 +304,10 @@ const HumanResource = () => {
                       <button
                         type="button"
                         key={index}
-                        onClick={() => setSelectedJob(job)}
+                        onClick={() => {
+                          setSelectedJob(job);
+                          setErrorMessage("");
+                        }}
                         className="flex items-center justify-between gap-3 w-full text-left bg-gray-50 hover:bg-[#10283f] hover:text-white text-[#10283f] px-4 py-4 rounded-xl border border-gray-200 hover:border-[#10283f] transition-all duration-300 group"
                       >
                         <span className="font-medium text-sm sm:text-base">
@@ -200,6 +319,26 @@ const HumanResource = () => {
                     ))}
                   </div>
                 </>
+              ) : successMessage ? (
+                <div className="text-center py-8">
+                  <FaCheckCircle className="text-5xl text-green-600 mx-auto mb-5" />
+
+                  <h3 className="text-xl font-bold text-[#10283f] mb-3">
+                    Application Submitted!
+                  </h3>
+
+                  <p className="text-gray-600 leading-relaxed mb-7">
+                    {successMessage}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="bg-[#10283f] hover:bg-[#183f5c] text-white font-bold px-8 py-3 rounded-xl transition"
+                  >
+                    Close
+                  </button>
+                </div>
               ) : (
                 <>
                   <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
@@ -207,43 +346,62 @@ const HumanResource = () => {
                     Please provide accurate information.
                   </div>
 
+                  {errorMessage && (
+                    <div
+                      role="alert"
+                      className="mb-5 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"
+                    >
+                      {errorMessage}
+                    </div>
+                  )}
+
                   <form
-                    action="https://formspree.io/f/mgejgjjj"
-                    method="POST"
-                    encType="multipart/form-data"
+                    onSubmit={handleSubmit}
                     className="space-y-5"
                   >
                     <input
                       type="hidden"
-                      name="Job Role"
+                      name="jobRole"
                       value={selectedJob}
                     />
 
                     <div>
-                      <label className="block text-sm font-semibold text-[#10283f] mb-2">
+                      <label
+                        htmlFor="career-full-name"
+                        className="block text-sm font-semibold text-[#10283f] mb-2"
+                      >
                         Full Name
                       </label>
 
                       <input
+                        id="career-full-name"
                         type="text"
-                        name="Full Name"
+                        name="fullName"
                         required
+                        maxLength={150}
                         placeholder="Your Full Name"
-                        className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-[#c69a55] focus:ring-2 focus:ring-[#c69a55]/20 transition"
+                        disabled={isSubmitting}
+                        className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-[#c69a55] focus:ring-2 focus:ring-[#c69a55]/20 transition disabled:bg-gray-100"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-[#10283f] mb-2">
+                      <label
+                        htmlFor="career-email"
+                        className="block text-sm font-semibold text-[#10283f] mb-2"
+                      >
                         Email Address
                       </label>
 
                       <input
+                        id="career-email"
                         type="email"
-                        name="Email"
+                        name="email"
                         required
+                        maxLength={254}
                         placeholder="Your Email"
-                        className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-[#c69a55] focus:ring-2 focus:ring-[#c69a55]/20 transition"
+                        disabled={isSubmitting}
+                        className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-[#c69a55] focus:ring-2 focus:ring-[#c69a55]/20 transition disabled:bg-gray-100"
                       />
                     </div>
 
@@ -253,7 +411,11 @@ const HumanResource = () => {
                         Upload CV (PDF or DOC)
                       </label>
 
-                      <label className="flex items-center gap-3 cursor-pointer bg-gray-50 border border-dashed border-gray-300 hover:border-[#c69a55] rounded-xl p-4 transition">
+                      <label className={`flex items-center gap-3 bg-gray-50 border border-dashed border-gray-300 rounded-xl p-4 transition ${
+                        isSubmitting
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer hover:border-[#c69a55]"
+                      }`}>
                         <FaFilePdf className="text-2xl text-[#b68b4b] shrink-0" />
 
                         <div className="min-w-0">
@@ -262,19 +424,21 @@ const HumanResource = () => {
                           </span>
 
                           <span className="block text-xs text-gray-500 truncate">
-                            {cvFile || "PDF, DOC or DOCX"}
+                            {cvFile || "PDF, DOC or DOCX — Maximum 5 MB"}
                           </span>
                         </div>
 
                         <input
                           type="file"
-                          name="CV"
+                          name="cv"
                           accept=".pdf,.doc,.docx"
                           required
+                          disabled={isSubmitting}
                           className="hidden"
-                          onChange={(e) =>
-                            setCvFile(e.target.files?.[0]?.name || "")
-                          }
+                          onChange={(e) => {
+                            setCvFile(e.target.files?.[0]?.name || "");
+                            setErrorMessage("");
+                          }}
                         />
                       </label>
                     </div>
@@ -285,7 +449,11 @@ const HumanResource = () => {
                         Upload Credentials (PDF or Image)
                       </label>
 
-                      <label className="flex items-center gap-3 cursor-pointer bg-gray-50 border border-dashed border-gray-300 hover:border-[#c69a55] rounded-xl p-4 transition">
+                      <label className={`flex items-center gap-3 bg-gray-50 border border-dashed border-gray-300 rounded-xl p-4 transition ${
+                        isSubmitting
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer hover:border-[#c69a55]"
+                      }`}>
                         <FaFileAlt className="text-2xl text-[#b68b4b] shrink-0" />
 
                         <div className="min-w-0">
@@ -294,21 +462,24 @@ const HumanResource = () => {
                           </span>
 
                           <span className="block text-xs text-gray-500 truncate">
-                            {credentialFile || "PDF, JPG, JPEG or PNG"}
+                            {credentialFile ||
+                              "PDF, JPG, JPEG or PNG — Maximum 5 MB"}
                           </span>
                         </div>
 
                         <input
                           type="file"
-                          name="Credentials"
+                          name="credentials"
                           accept=".pdf,.jpg,.jpeg,.png"
                           required
+                          disabled={isSubmitting}
                           className="hidden"
-                          onChange={(e) =>
+                          onChange={(e) => {
                             setCredentialFile(
                               e.target.files?.[0]?.name || ""
-                            )
-                          }
+                            );
+                            setErrorMessage("");
+                          }}
                         />
                       </label>
                     </div>
@@ -316,23 +487,28 @@ const HumanResource = () => {
                     <div className="flex flex-col sm:flex-row gap-3 pt-3">
                       <button
                         type="button"
+                        disabled={isSubmitting}
                         onClick={() => {
                           setSelectedJob("");
                           setCvFile("");
                           setCredentialFile("");
+                          setErrorMessage("");
                         }}
-                        className="sm:w-1/3 border border-gray-300 text-gray-700 font-semibold px-5 py-3 rounded-xl hover:bg-gray-100 transition"
+                        className="sm:w-1/3 border border-gray-300 text-gray-700 font-semibold px-5 py-3 rounded-xl hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Back
                       </button>
 
                       <button
                         type="submit"
-                        className="sm:flex-1 bg-[#10283f] hover:bg-[#183f5c] text-white font-bold px-6 py-3 rounded-xl shadow transition-all duration-300"
+                        disabled={isSubmitting}
+                        className="sm:flex-1 bg-[#10283f] hover:bg-[#183f5c] text-white font-bold px-6 py-3 rounded-xl shadow transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
                       >
                         <span className="inline-flex items-center justify-center gap-2">
                           <FaCheckCircle />
-                          Submit Application
+                          {isSubmitting
+                            ? "Submitting Application..."
+                            : "Submit Application"}
                         </span>
                       </button>
                     </div>

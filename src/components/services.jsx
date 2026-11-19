@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Modal } from "antd";
 import { motion } from "framer-motion";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { ArrowUpRight, X, ChevronRight } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 import shiphaulage from "../images/shiphaulage.jpg";
 import haulage from "../images/haulage.png";
@@ -16,7 +17,8 @@ import offshore from "../images/offshore.jpg";
 import contracting from "../images/contracting.jpg";
 import ropeaccess from "../images/ropeaccess.jpg";
 
-const cards = [
+// Original services retained as a fallback.
+const fallbackCards = [
   {
     title: "General Supplies, Imports & Export",
     description:
@@ -24,8 +26,14 @@ const cards = [
     image: shiphaulage,
     detailsImage: exportIcon,
     items: [
-      { label: "Provision of Essential Materials and Equipments", link: "/Cargo Handling" },
-      { label: "Facilitating Imports and Exports", link: "/service-b" },
+      {
+        label: "Provision of Essential Materials and Equipments",
+        link: "/Cargo Handling",
+      },
+      {
+        label: "Facilitating Imports and Exports",
+        link: "/service-b",
+      },
     ],
   },
   {
@@ -34,7 +42,12 @@ const cards = [
       "Reliable and efficient movement of goods and equipment across various locations, ensuring timely delivery and operational support for diverse industries.",
     image: haulage,
     detailsImage: roadIcon,
-    items: [{ label: "Logistics and Haulage Solutions", link: "/feature-x" }],
+    items: [
+      {
+        label: "Logistics and Haulage Solutions",
+        link: "/feature-x",
+      },
+    ],
   },
   {
     title: "Downstream Oil and Gas Services",
@@ -101,9 +114,120 @@ const cards = [
   },
 ];
 
+// Supabase Storage bucket
+const STORAGE_BUCKET = "services-images";
+
+// Convert a stored image path into a public URL.
+const getImageUrl = (path, fallback = "") => {
+  if (!path) return fallback;
+
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+
+  const { data } = supabase.storage
+    .from(STORAGE_BUCKET)
+    .getPublicUrl(path);
+
+  return data?.publicUrl || fallback;
+};
+
 const Services = () => {
+  const [cards, setCards] = useState(fallbackCards);
   const [selectedCard, setSelectedCard] = useState(null);
   const [nestedModalItem, setNestedModalItem] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchServices = async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select(
+          "id, title, summary, description, image_path, details, display_order"
+        )
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+
+      if (!isMounted) return;
+
+      if (error) {
+        console.error("Unable to load published services:", error);
+        return;
+      }
+
+      // Keep the original cards if no published database records exist.
+      if (!data || data.length === 0) {
+        setCards(fallbackCards);
+        return;
+      }
+
+      const databaseCards = data.map((service) => {
+  const details = service.details || {};
+
+  const fallback = fallbackCards.find(
+    (card) => card.title === service.title
+  );
+
+  return {
+    id: service.id,
+    title: service.title,
+    description:
+      service.description ||
+      service.summary ||
+      fallback?.description ||
+      "",
+    image: getImageUrl(
+      service.image_path,
+      fallback?.image || ""
+    ),
+    detailsImage: getImageUrl(
+      details.details_image_path,
+      fallback?.detailsImage ||
+        getImageUrl(service.image_path)
+    ),
+    items:
+      Array.isArray(details.items) && details.items.length > 0
+        ? details.items
+        : fallback?.items || [],
+    display_order: service.display_order ?? 0,
+    isDatabaseRecord: true,
+  };
+});
+
+const mergedCards = fallbackCards.map((card, index) => ({
+  ...card,
+  display_order: index + 1,
+  isDatabaseRecord: false,
+}));
+
+// Replace matching original services with their database versions.
+databaseCards.forEach((databaseCard) => {
+  const existingIndex = mergedCards.findIndex(
+    (card) => card.title === databaseCard.title
+  );
+
+  if (existingIndex !== -1) {
+    mergedCards.splice(existingIndex, 1);
+  }
+
+  mergedCards.push(databaseCard);
+});
+
+// Sort all services by display order.
+mergedCards.sort(
+  (a, b) => a.display_order - b.display_order
+);
+
+setCards(mergedCards);
+    };
+
+    fetchServices();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <section className="relative py-20 md:py-28 px-5 md:px-8 overflow-hidden bg-[#f6f7f8]">
@@ -156,7 +280,7 @@ const Services = () => {
 
           {cards.map((card, index) => (
             <motion.div
-              key={index}
+              key={card.id || index}
               initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
@@ -197,7 +321,7 @@ const Services = () => {
                   {/* CARD NUMBER */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/80 text-xs font-semibold tracking-[2px]">
-                      0{index + 1}
+                      {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
 
@@ -269,7 +393,7 @@ const Services = () => {
             <div className="relative h-52 md:h-64 overflow-hidden">
 
               <img
-                src={selectedCard.detailsImage}
+                src={selectedCard.detailsImage || selectedCard.image}
                 alt={selectedCard.title}
                 className="w-full h-full object-cover"
               />
@@ -361,7 +485,8 @@ const Services = () => {
             </h4>
 
             <p className="text-sm leading-relaxed text-gray-600">
-              You clicked on: <strong>{nestedModalItem.label}</strong>. You may link this to a
+              You clicked on:{" "}
+              <strong>{nestedModalItem.label}</strong>. You may link this to a
               service detail page or more info.
             </p>
 

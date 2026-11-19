@@ -49,7 +49,8 @@ const Navbar = () => {
         { path: "/track-records", label: "Track Records" },
       ],
     },
-    { path: "/catelogue", label: "Catalogue" },
+        { path: "/catelogue", label: "Catalogue" },
+    { path: "/news", label: "News & Events" },
     {
       label: "About",
       submenu: [

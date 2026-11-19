@@ -1,9 +1,76 @@
 
-import React from "react";
-import { ArrowRight, Mail, Phone, User, MessageSquare } from "lucide-react";
+import React, { useState } from "react";
+import {
+  ArrowRight,
+  Mail,
+  Phone,
+  User,
+  MessageSquare,
+} from "lucide-react";
+import { supabase } from "../lib/supabase";
 import proposal from "../images/proposal.jpg";
 
 const ProposalFormSection = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const enquiry = {
+      name: formData.get("name")?.toString().trim() || "",
+      phone: formData.get("phone")?.toString().trim() || "",
+      email: formData.get("email")?.toString().trim() || "",
+      message: formData.get("message")?.toString().trim() || "",
+    };
+
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "submit-enquiry",
+        {
+          body: enquiry,
+        }
+      );
+
+      if (error) {
+        throw new Error(
+          error.message || "Unable to submit your proposal."
+        );
+      }
+
+      if (!data?.success) {
+        throw new Error(
+          data?.error || "Your proposal could not be submitted."
+        );
+      }
+
+      form.reset();
+
+      setSuccessMessage(
+        "Thank you! Your proposal enquiry has been submitted successfully. Our team will get in touch with you."
+      );
+    } catch (error) {
+      console.error("Proposal submission error:", error);
+
+      setErrorMessage(
+        error.message ||
+          "Something went wrong. Please try again later."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#f5f7f9] py-20 md:py-28 px-5 md:px-8">
       {/* Decorative background */}
@@ -11,7 +78,6 @@ const ProposalFormSection = () => {
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-100/40 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto">
-
         {/* Section introduction */}
         <div className="text-center mb-14">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -37,7 +103,6 @@ const ProposalFormSection = () => {
 
         {/* Main content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
           {/* Image section */}
           <div className="relative flex justify-center items-center">
             <div className="absolute w-72 h-72 md:w-[420px] md:h-[420px] border-2 border-amber-400/50 rounded-full" />
@@ -63,8 +128,7 @@ const ProposalFormSection = () => {
           {/* Form section */}
           <div className="w-full">
             <form
-              action="https://formspree.io/f/yourFormID"
-              method="POST"
+              onSubmit={handleSubmit}
               className="bg-white p-6 md:p-10 rounded-2xl shadow-xl border border-gray-100 space-y-6"
             >
               <div className="mb-2">
@@ -101,6 +165,7 @@ const ProposalFormSection = () => {
                       type="text"
                       name="name"
                       placeholder="Your full name"
+                      maxLength={120}
                       required
                       className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:bg-white"
                     />
@@ -126,6 +191,7 @@ const ProposalFormSection = () => {
                       type="tel"
                       name="phone"
                       placeholder="Your phone number"
+                      maxLength={40}
                       required
                       className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:bg-white"
                     />
@@ -153,6 +219,7 @@ const ProposalFormSection = () => {
                     type="email"
                     name="email"
                     placeholder="you@example.com"
+                    maxLength={254}
                     required
                     className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 placeholder:text-gray-400 outline-none transition-all duration-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:bg-white"
                   />
@@ -179,23 +246,46 @@ const ProposalFormSection = () => {
                     name="message"
                     placeholder="Tell us about your project or service requirements..."
                     rows={5}
+                    maxLength={5000}
                     required
                     className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 placeholder:text-gray-400 outline-none resize-y transition-all duration-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:bg-white"
                   />
                 </div>
               </div>
 
+              {/* Submission feedback */}
+              {successMessage && (
+                <div
+                  role="status"
+                  className="p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm"
+                >
+                  {successMessage}
+                </div>
+              )}
+
+              {errorMessage && (
+                <div
+                  role="alert"
+                  className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"
+                >
+                  {errorMessage}
+                </div>
+              )}
+
               {/* Submit button */}
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-3 bg-[#10283f] hover:bg-amber-500 text-white hover:text-[#10283f] font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center gap-3 bg-[#10283f] hover:bg-amber-500 text-white hover:text-[#10283f] font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Submit Proposal
+                {isSubmitting ? "Submitting..." : "Submit Proposal"}
 
-                <ArrowRight
-                  size={19}
-                  className="transition-transform duration-300 group-hover:translate-x-2"
-                />
+                {!isSubmitting && (
+                  <ArrowRight
+                    size={19}
+                    className="transition-transform duration-300 group-hover:translate-x-2"
+                  />
+                )}
               </button>
 
               <p className="text-center text-xs text-gray-400">

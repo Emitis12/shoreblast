@@ -14,7 +14,7 @@ const SocialMediaIcons = ({ hiddenOnMobile }) => {
 
   return (
     <div
-      className={`fixed bottom-6 right-4 z-50 flex flex-col items-center gap-3 transition-all duration-500 ${
+      className={`fixed bottom-24 right-4 z-50 flex flex-col items-center gap-3 transition-all duration-500 ${
         hiddenOnMobile
           ? "opacity-0 pointer-events-none translate-y-5"
           : "opacity-100 translate-y-0"
